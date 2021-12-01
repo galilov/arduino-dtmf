@@ -6,13 +6,11 @@ namespace Demo
 {
     internal class CircleFuncControl : MyControl
     {
-        public delegate float FN(float t, float height);
-
         public delegate void FNResponse(float freq, float module);
 
         public FN Fn
         {
-            get { return _fn; }
+            get => _fn;
             set
             {
                 if (_fn != value) _cache.Clear();
@@ -22,10 +20,10 @@ namespace Demo
         public FNResponse FnResponse;
         public float RotationFrequencyHz
         {
-            get { return _rotationFrequencyHz; }
+            get => _rotationFrequencyHz;
             set
             {
-                if (_rotationFrequencyHz != value) _cache.Clear();
+                if (Math.Abs(_rotationFrequencyHz - value) > float.Epsilon) _cache.Clear();
                 _rotationFrequencyHz = value;
             }
         }
@@ -33,7 +31,7 @@ namespace Demo
             get { return _fnMinArgSeconds; }
             set
             {
-                if (_fnMinArgSeconds != value) _cache.Clear();
+                if (Math.Abs(_fnMinArgSeconds - value) > float.Epsilon) _cache.Clear();
                 _fnMinArgSeconds = value;
             }
         }
@@ -42,16 +40,16 @@ namespace Demo
             get { return _nMaxArgSeconds; }
             set
             {
-                if (_nMaxArgSeconds != value) _cache.Clear();
+                if (Math.Abs(_nMaxArgSeconds - value) > float.Epsilon) _cache.Clear();
                 _nMaxArgSeconds = value;
             }
         }
         public float DeltaArgSeconds
         {
-            get { return _deltaArgSeconds; }
+            get => _deltaArgSeconds;
             set
             {
-                if (_deltaArgSeconds != value) _cache.Clear();
+                if (Math.Abs(_deltaArgSeconds - value) > float.Epsilon) _cache.Clear();
                 _deltaArgSeconds = value;
             }
         }
@@ -72,6 +70,7 @@ namespace Demo
             _maxAmpl = Math.Min(Width, Height) / 2f;
             _t = FnMinArgSeconds;
             _w = 2 * Math.PI * RotationFrequencyHz;
+            _cache.Clear();
         }
 
         public override bool UpdateFrame()
@@ -89,13 +88,11 @@ namespace Demo
                 string s;
                 if (RotationFrequencyHz != 0)
                 {
-                    s = String.Format("Период: {0:f03} с / Частота: {1:f01} Гц",
-                        1f / RotationFrequencyHz, RotationFrequencyHz);
+                    s = $"Период: {1f / RotationFrequencyHz:f03} с / Частота: {RotationFrequencyHz:f01} Гц";
                 }
                 else
                 {
-                    s = String.Format("Период: ∞ / Частота: {0:f01} Гц",
-                        RotationFrequencyHz);
+                    s = $"Период: ∞ / Частота: {RotationFrequencyHz:f01} Гц";
                 }
 
                 g.DrawString(s, _font, Brushes.White, 20, 20);
@@ -118,7 +115,7 @@ namespace Demo
                     else
                     {
                         var wt = _w * t;
-                        f = Fn(t, _maxAmpl);
+                        f = Fn(t) * _maxAmpl;
                         coswt = (float)Math.Cos(wt);
                         sinwt = (float)Math.Sin(wt);
                         _cache.Add(new Tuple<float, float, float>(coswt, sinwt, f));
@@ -161,7 +158,7 @@ namespace Demo
             }
 
             Image = _bmp.Bitmap;
-            FnResponse?.Invoke(RotationFrequencyHz,
+            FnResponse(RotationFrequencyHz,
                 (float) Math.Sqrt(xMassCenter * xMassCenter + yMassCenter * yMassCenter));
             if (_t < FnMaxArgSeconds - DeltaArgSeconds)
             {

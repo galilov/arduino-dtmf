@@ -6,8 +6,6 @@ namespace Demo
 {
     internal class FuncControl : MyControl
     {
-        public delegate float FN(float t, float height);
-
         public FN Fn
         {
             get { return _fn; }
@@ -18,13 +16,23 @@ namespace Demo
             }
         }
 
+        public float DeltaArgSeconds
+        {
+            get => _deltaArgSeconds;
+            set
+            {
+                if (Math.Abs(_deltaArgSeconds - value) > float.Epsilon) _cache.Clear();
+                _deltaArgSeconds = value;
+            }
+        }
+        private float _deltaArgSeconds = 0.1f;
         private FN _fn;
         private float _t = 0;
         private List<float> _cache = new List<float>(2048);
 
         public FuncControl()
         {
-            Fn = _calc;
+            //Fn = _calc;
         }
 
         public override bool UpdateFrame()
@@ -36,7 +44,7 @@ namespace Demo
                 g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
                 var zeroLevel = Height / 2;
                 g.DrawLine(Pens.White, 0, zeroLevel, Width, zeroLevel);
-                int i = 0;
+                var i = 0;
                 var xPrev = i;
                 var yPrev = _callFn(i);
 
@@ -57,11 +65,10 @@ namespace Demo
                     yPrev = y;
                 }
 
-                for (var j = 0; j < Width; j += (Width / 20))
+                for (var j = 0f; j < ClientSize.Width; j += ClientSize.Width / 20f)
                 {
                     g.DrawLine(Pens.White, j, Height / 2 - 5, j, Height / 2 + 5);
-                    _bmp.SetPixel(j, Height / 2 + 5, Color.White.ToArgb());
-                    var s = String.Format("{0:f02}", (float) j / Width);
+                    var s = $"{j / Width:f02}";
                     g.DrawString(s, _font, Brushes.White, j - 5, Height / 2 + 8);
                 }
 
@@ -72,10 +79,9 @@ namespace Demo
             }
 
             Image = _bmp.Bitmap;
-            var delta = 1f / Width;
-            if (_t < 1f - delta)
+            if (_t < 1 - DeltaArgSeconds)
             {
-                _t += delta;
+                _t += DeltaArgSeconds;
                 return true;
             }
 
@@ -85,27 +91,16 @@ namespace Demo
         protected override void _resetState()
         {
             _t = 0;
+            _cache.Clear();
         }
         private float _callFn(int i)
         {
-            return Height / 2f - Fn((float)i / Width, Height / 2f);
+            return Height / 2f - Fn((float)i / Width) * (Height / 2f);
         }
 
         private float _callFn(float t)
         {
-            return Height / 2f - Fn(t, Height / 2f);
-        }
-
-        private float _calc(float time, float maxAmpl)
-        {
-            const int freq = 10;
-            const int phase = 0;
-            const int amplitude = 1;
-            const int yOffset = 0;
-            var w = 2 * Math.PI * freq;
-            var vertUnit = maxAmpl * 0.9f;
-            var y = amplitude * vertUnit * Math.Cos(w * time + phase) + yOffset * vertUnit;
-            return (float) y;
+            return Height / 2f - Fn(t) * (Height / 2f);
         }
     }
 }

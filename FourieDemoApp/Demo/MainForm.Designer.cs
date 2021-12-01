@@ -52,7 +52,7 @@
             // 
             // timer
             // 
-            this.timer.Interval = 6D;
+            this.timer.Interval = 16D;
             this.timer.SynchronizingObject = this;
             this.timer.Elapsed += new System.Timers.ElapsedEventHandler(this.timer_Elapsed);
             // 
@@ -71,17 +71,19 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.numBegin);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(12, 1034);
+            this.panel1.Location = new System.Drawing.Point(11, 654);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1894, 44);
+            this.panel1.Size = new System.Drawing.Size(1263, 35);
             this.panel1.TabIndex = 0;
             // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(1573, 5);
+            this.label4.Location = new System.Drawing.Point(1049, 3);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(128, 38);
+            this.label4.Size = new System.Drawing.Size(85, 34);
             this.label4.TabIndex = 10;
             this.label4.Text = "Масштаб:";
             // 
@@ -94,14 +96,15 @@
             0,
             0,
             65536});
-            this.numScale.Location = new System.Drawing.Point(1707, 3);
+            this.numScale.Location = new System.Drawing.Point(1138, 2);
+            this.numScale.Margin = new System.Windows.Forms.Padding(2);
             this.numScale.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
             this.numScale.Name = "numScale";
-            this.numScale.Size = new System.Drawing.Size(120, 35);
+            this.numScale.Size = new System.Drawing.Size(80, 26);
             this.numScale.TabIndex = 9;
             this.numScale.Value = new decimal(new int[] {
             1,
@@ -114,9 +117,10 @@
             // 
             this.checkBoxPower2.Cursor = System.Windows.Forms.Cursors.Default;
             this.checkBoxPower2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkBoxPower2.Location = new System.Drawing.Point(1146, 5);
+            this.checkBoxPower2.Location = new System.Drawing.Point(764, 3);
+            this.checkBoxPower2.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxPower2.Name = "checkBoxPower2";
-            this.checkBoxPower2.Size = new System.Drawing.Size(406, 31);
+            this.checkBoxPower2.Size = new System.Drawing.Size(271, 25);
             this.checkBoxPower2.TabIndex = 8;
             this.checkBoxPower2.Text = "Показать значения в квадрате";
             this.checkBoxPower2.UseVisualStyleBackColor = true;
@@ -124,10 +128,12 @@
             // 
             // btnPauseResume
             // 
+            this.btnPauseResume.Enabled = false;
             this.btnPauseResume.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnPauseResume.Location = new System.Drawing.Point(869, 1);
+            this.btnPauseResume.Location = new System.Drawing.Point(579, 1);
+            this.btnPauseResume.Margin = new System.Windows.Forms.Padding(2);
             this.btnPauseResume.Name = "btnPauseResume";
-            this.btnPauseResume.Size = new System.Drawing.Size(122, 37);
+            this.btnPauseResume.Size = new System.Drawing.Size(81, 27);
             this.btnPauseResume.TabIndex = 7;
             this.btnPauseResume.Text = "Пауза";
             this.btnPauseResume.UseVisualStyleBackColor = true;
@@ -136,9 +142,10 @@
             // btnStartStop
             // 
             this.btnStartStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnStartStop.Location = new System.Drawing.Point(730, 1);
+            this.btnStartStop.Location = new System.Drawing.Point(487, 1);
+            this.btnStartStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnStartStop.Name = "btnStartStop";
-            this.btnStartStop.Size = new System.Drawing.Size(122, 37);
+            this.btnStartStop.Size = new System.Drawing.Size(81, 27);
             this.btnStartStop.TabIndex = 6;
             this.btnStartStop.Text = "Старт";
             this.btnStartStop.UseVisualStyleBackColor = true;
@@ -153,14 +160,15 @@
             0,
             0,
             65536});
-            this.numStep.Location = new System.Drawing.Point(606, 1);
+            this.numStep.Location = new System.Drawing.Point(404, 1);
+            this.numStep.Margin = new System.Windows.Forms.Padding(2);
             this.numStep.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
             this.numStep.Name = "numStep";
-            this.numStep.Size = new System.Drawing.Size(94, 35);
+            this.numStep.Size = new System.Drawing.Size(63, 26);
             this.numStep.TabIndex = 5;
             this.numStep.Value = new decimal(new int[] {
             1,
@@ -171,9 +179,10 @@
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(484, 5);
+            this.label3.Location = new System.Drawing.Point(323, 3);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(116, 29);
+            this.label3.Size = new System.Drawing.Size(77, 32);
             this.label3.TabIndex = 4;
             this.label3.Text = "Шаг f,Гц";
             // 
@@ -186,9 +195,10 @@
             0,
             0,
             65536});
-            this.numEnd.Location = new System.Drawing.Point(368, 3);
+            this.numEnd.Location = new System.Drawing.Point(245, 2);
+            this.numEnd.Margin = new System.Windows.Forms.Padding(2);
             this.numEnd.Name = "numEnd";
-            this.numEnd.Size = new System.Drawing.Size(94, 35);
+            this.numEnd.Size = new System.Drawing.Size(63, 26);
             this.numEnd.TabIndex = 3;
             this.numEnd.Value = new decimal(new int[] {
             20,
@@ -199,9 +209,10 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(241, 3);
+            this.label2.Location = new System.Drawing.Point(161, 2);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(121, 35);
+            this.label2.Size = new System.Drawing.Size(81, 33);
             this.label2.TabIndex = 2;
             this.label2.Text = "Кон. f, Гц";
             // 
@@ -214,9 +225,10 @@
             0,
             0,
             65536});
-            this.numBegin.Location = new System.Drawing.Point(128, 3);
+            this.numBegin.Location = new System.Drawing.Point(85, 2);
+            this.numBegin.Margin = new System.Windows.Forms.Padding(2);
             this.numBegin.Name = "numBegin";
-            this.numBegin.Size = new System.Drawing.Size(94, 35);
+            this.numBegin.Size = new System.Drawing.Size(63, 26);
             this.numBegin.TabIndex = 1;
             this.numBegin.Value = new decimal(new int[] {
             1,
@@ -227,20 +239,22 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(3, 5);
+            this.label1.Location = new System.Drawing.Point(2, 3);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(119, 38);
+            this.label1.Size = new System.Drawing.Size(79, 32);
             this.label1.TabIndex = 0;
             this.label1.Text = "Нач. f, Гц";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1918, 1090);
+            this.ClientSize = new System.Drawing.Size(1279, 690);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
-            this.Text = "Fourie transform demo by AGalilov";
+            this.Text = "Fourier transform demo by AGalilov";
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.timer)).EndInit();

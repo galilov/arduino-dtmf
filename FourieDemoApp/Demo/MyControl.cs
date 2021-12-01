@@ -5,10 +5,11 @@ namespace Demo
 {
     internal abstract class MyControl : PictureBox
     {
+        public delegate float FN(float freq);
         protected DirectBitmap _bmp;
         private int _prevWidth = -1;
         private int _prevHeight = -1;
-        protected readonly Font _font = SystemFonts.CaptionFont;
+        protected readonly Font _font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold);
 
         public void Reset()
         {
