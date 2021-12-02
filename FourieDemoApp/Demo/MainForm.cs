@@ -11,8 +11,8 @@ namespace Demo
         private readonly CircleFuncControl _circleFuncControl;
         private readonly SpectrumControl _spectrumControl;
 
-        private readonly IDictionary<float, float> _spectrum =
-            new Dictionary<float, float>(new FloatEqualityComparer());
+        private readonly IDictionary<float, Tuple<float, float>> _spectrum =
+            new Dictionary<float, Tuple<float, float>>(new FloatEqualityComparer());
 
         public MainForm()
         {
@@ -22,7 +22,7 @@ namespace Demo
             _funcControl.DeltaArgSeconds = 0.016f;
             _funcControl.Fn = _calc;
             _circleFuncControl.Fn = _calc;
-            _circleFuncControl.FnResponse = (freq, module) => { _spectrum[freq] = module; };
+            _circleFuncControl.FnResponse = (freq, complexAmplitude) => { _spectrum[freq] = complexAmplitude; };
             _spectrumControl.Fn = (freq) =>
             {
                 if (_spectrum.TryGetValue(freq, out var massDistance))
@@ -30,7 +30,7 @@ namespace Demo
                     return massDistance;
                 }
 
-                return 0f;
+                return new Tuple<float, float>(0, 0);
             };
 
             InitializeComponent();
@@ -45,6 +45,7 @@ namespace Demo
             Controls.Add(_spectrumControl);
 
             ResumeLayout();
+            _resizeFuncControl();
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -71,6 +72,8 @@ namespace Demo
             _spectrumControl.Width = _circleFuncControl.Width;
             _spectrumControl.Height = _circleFuncControl.Height;
 
+            _spectrumControl.Scale = _circleFuncControl.Scale;
+
             _funcControl.Reset();
             _funcControl.UpdateFrame();
             _circleFuncControl.Reset();
@@ -84,7 +87,7 @@ namespace Demo
             _resizeFuncControl();
         }
 
-        private static float _calc(float t)
+        private static float _calc1(float t)
         {
             var amplitude = 0.5;
             var phase = 0;
@@ -97,19 +100,60 @@ namespace Demo
             var w1 = 2 * Math.PI * f1;
             var w2 = 2 * Math.PI * f2;
             var w3 = 2 * Math.PI * f3;
-            var vertUnit = 0.9f;
+           // var vertUnit = 0.9f;
             //var y0 = amplitude * vertUnit / 2 * Math.Sin(w0 * t + phase) + yOffset * vertUnit / 2;
-            var y1 = amplitude * vertUnit * Math.Cos(w1 * t + phase) + yOffset * vertUnit;
-            var y2 = amplitude * vertUnit / 10 * Math.Cos(w2 * t + phase) + yOffset * vertUnit * 0.1;
+            var y1 = amplitude *  Math.Cos(w1 * t + phase) + yOffset;
+            var y2 = amplitude / 10 * Math.Sin(w2 * t + phase) + yOffset;
             //var y3 = amplitude * vertUnit / 15 * Math.Cos(w3 * t + phase);
             var y = y2 + y1;//+  y3; 
             return (float) y;
+        }
+
+        private static float _calc(float t)
+        {
+            var amplitude = 1;
+            var phase = 0;
+            var yOffset = 0;
+            var f0 = 5;
+            var f1 = 1;
+            var f2 = 11;
+            var f3 = 20;
+            var w0 = 2 * Math.PI * f0;
+            var w1 = 2 * Math.PI * f1;
+            var w2 = 2 * Math.PI * f2;
+            var w3 = 2 * Math.PI * f3;
+            //var y0 = amplitude * vertUnit / 2 * Math.Sin(w0 * t + phase) + yOffset * vertUnit / 2;
+            var y1 = amplitude * Math.Cos(w1 * t + phase) + yOffset;
+            //var y2 = amplitude * vertUnit *0.7 * Math.Cos(w2 * t + phase);
+            //var y3 = amplitude * vertUnit * 0.6 * Math.Cos(w3 * t + phase);
+            var y =  y1 ; 
+            return (float)y;
+        }
+
+        private static float _calc2(float t)
+        {
+            var amplitude = 0.5;
+            var phase = 0;
+            var yOffset = 0.5;
+            var f1 = 7;
+            var w1 = 2 * Math.PI * f1;
+            var vertUnit = 0.9f;
+            var y1 = amplitude * vertUnit * Math.Cos(w1 * t + phase) + yOffset * vertUnit;
+            var y = y1;
+            return (float)y;
         }
 
         private void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (!_circleFuncControl.UpdateFrame())
             {
+                if (checkBoxAutoStop.Checked)
+                {
+                    timer.Enabled = false;
+                    checkBoxAutoStop.Checked = false;
+                    _updateButtons();
+                    return;
+                }
                 _circleFuncControl.RotationFrequencyHz += (float) numStep.Value;
                 _circleFuncControl.Reset();
             }

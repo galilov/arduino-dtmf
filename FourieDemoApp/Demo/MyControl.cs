@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Demo
@@ -23,7 +25,7 @@ namespace Demo
             _resetState();
         }
 
-        protected virtual void _resetState(){}
+        protected virtual void _resetState() { }
         public abstract bool UpdateFrame();
     }
 }

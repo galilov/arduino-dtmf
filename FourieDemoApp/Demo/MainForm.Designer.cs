@@ -33,7 +33,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.numScale = new System.Windows.Forms.NumericUpDown();
-            this.checkBoxPower2 = new System.Windows.Forms.CheckBox();
             this.btnPauseResume = new System.Windows.Forms.Button();
             this.btnStartStop = new System.Windows.Forms.Button();
             this.numStep = new System.Windows.Forms.NumericUpDown();
@@ -42,6 +41,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.numBegin = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.checkBoxAutoStop = new System.Windows.Forms.CheckBox();
+            this.checkBoxPower2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.timer)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numScale)).BeginInit();
@@ -60,6 +61,7 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.checkBoxAutoStop);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.numScale);
             this.panel1.Controls.Add(this.checkBoxPower2);
@@ -80,7 +82,7 @@
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(1049, 3);
+            this.label4.Location = new System.Drawing.Point(951, 4);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(85, 34);
@@ -96,7 +98,7 @@
             0,
             0,
             65536});
-            this.numScale.Location = new System.Drawing.Point(1138, 2);
+            this.numScale.Location = new System.Drawing.Point(1040, 3);
             this.numScale.Margin = new System.Windows.Forms.Padding(2);
             this.numScale.Maximum = new decimal(new int[] {
             10,
@@ -112,19 +114,6 @@
             0,
             0});
             this.numScale.ValueChanged += new System.EventHandler(this.numScale_ValueChanged);
-            // 
-            // checkBoxPower2
-            // 
-            this.checkBoxPower2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.checkBoxPower2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkBoxPower2.Location = new System.Drawing.Point(764, 3);
-            this.checkBoxPower2.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBoxPower2.Name = "checkBoxPower2";
-            this.checkBoxPower2.Size = new System.Drawing.Size(271, 25);
-            this.checkBoxPower2.TabIndex = 8;
-            this.checkBoxPower2.Text = "Показать значения в квадрате";
-            this.checkBoxPower2.UseVisualStyleBackColor = true;
-            this.checkBoxPower2.CheckedChanged += new System.EventHandler(this.checkBoxPower2_CheckedChanged);
             // 
             // btnPauseResume
             // 
@@ -246,6 +235,31 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Нач. f, Гц";
             // 
+            // checkBoxAutoStop
+            // 
+            this.checkBoxAutoStop.Cursor = System.Windows.Forms.Cursors.Default;
+            this.checkBoxAutoStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkBoxAutoStop.Location = new System.Drawing.Point(1139, 2);
+            this.checkBoxAutoStop.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxAutoStop.Name = "checkBoxAutoStop";
+            this.checkBoxAutoStop.Size = new System.Drawing.Size(122, 25);
+            this.checkBoxAutoStop.TabIndex = 11;
+            this.checkBoxAutoStop.Text = "Автостоп";
+            this.checkBoxAutoStop.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxPower2
+            // 
+            this.checkBoxPower2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.checkBoxPower2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkBoxPower2.Location = new System.Drawing.Point(676, 2);
+            this.checkBoxPower2.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxPower2.Name = "checkBoxPower2";
+            this.checkBoxPower2.Size = new System.Drawing.Size(271, 25);
+            this.checkBoxPower2.TabIndex = 8;
+            this.checkBoxPower2.Text = "Показать значения в квадрате";
+            this.checkBoxPower2.UseVisualStyleBackColor = true;
+            this.checkBoxPower2.Click += new System.EventHandler(this.checkBoxPower2_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -270,7 +284,6 @@
         private System.Windows.Forms.NumericUpDown numScale;
 
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox checkBoxPower2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
 
         private System.Windows.Forms.Button btnPauseResume;
@@ -292,5 +305,8 @@
         private System.Timers.Timer timer;
 
         #endregion
+
+        private System.Windows.Forms.CheckBox checkBoxAutoStop;
+        private System.Windows.Forms.CheckBox checkBoxPower2;
     }
 }
