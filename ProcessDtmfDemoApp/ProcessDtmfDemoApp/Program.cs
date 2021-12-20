@@ -7,7 +7,7 @@ namespace ProcessDtmf
     public static class Program
     {
         // Последовательный порт, связанный с контроллером Arduino.
-        private const string PortName = "COM5";
+        private const string PortName = "COM10";
 
         // Скорость порта, бод.
         private const int PortBaudRate = 115200;
@@ -57,7 +57,7 @@ namespace ProcessDtmf
         /// Клиентский обработчик, получающий символы DTMF.
         /// </summary>
         /// <param name="c">Символ DTMF.</param>
-        private static void Handler(char c)
+        private static void Handler(string c)
         {
             Console.Write(c);
         }

@@ -8,7 +8,7 @@ namespace ProcessDtmf
 {
     internal class DtmfDecoder
     {
-        public delegate void SymbolReadyHandler(char c);
+        public delegate void SymbolReadyHandler(string c);
 
         // Длина буфера для сигнала одного символа, в секундах.
         private const double SymbolImageBufferLengthInSeconds = 0.03;
@@ -22,6 +22,9 @@ namespace ProcessDtmf
         // Максимальный порог девиации сигнала, опознаваемого как
         // пауза или тишина.
         private const double PauseMaxDeviationThreshold = 1.0;
+
+        private const double HandsetOffHookThreshold = 180;
+        private const double HandsetOnHookThreshold = 20;
 
         // Константы с частотами DTMF тонов, Гц.
         private const int F697 = 697;
@@ -67,8 +70,8 @@ namespace ProcessDtmf
         private readonly BlockingCollection<byte> _inputSamplesQueue;
 
         // Выходная очередь с декодированными символами DTMF.
-        private readonly BlockingCollection<char> _outputDetectedCharactersQueue =
-            new BlockingCollection<char>();
+        private readonly BlockingCollection<string> _outputDetectedCharactersQueue =
+            new BlockingCollection<string>();
 
         // Ссылка на обработчик, которому передаются декодированные символы.
         private readonly SymbolReadyHandler _handler;
@@ -116,6 +119,8 @@ namespace ProcessDtmf
         // DoFourierTransformForDtmf()
         private readonly double[] _amplitudes = new double[_frequencies.Length];
 
+        private volatile bool _handsetIsOnHook = true; // тел. трубка положена
+
         /// <summary>
         /// Конструктор.
         /// </summary>
@@ -131,8 +136,8 @@ namespace ProcessDtmf
             // сэмплов) на основе частоты дискретизации и
             // продолжительности фрагментов, необходимых для работы
             // детектора (дискретного преобразования Фурье).
-            _symbolImageSizeInSamples = (int) Math.Round(frameRate * SymbolImageBufferLengthInSeconds);
-            _pauseImageSizeInSamples = (int) Math.Round(frameRate * PauseImageBufferLengthInSeconds);
+            _symbolImageSizeInSamples = (int)Math.Round(frameRate * SymbolImageBufferLengthInSeconds);
+            _pauseImageSizeInSamples = (int)Math.Round(frameRate * PauseImageBufferLengthInSeconds);
         }
 
         /// <summary>
@@ -329,7 +334,7 @@ namespace ProcessDtmf
                 var max = _foundSymbols.Max(kvp => kvp.Value);
                 var symbol = _foundSymbols.First(kvp => kvp.Value == max).Key;
                 _foundSymbols.Clear();
-                _outputDetectedCharactersQueue.Add(symbol, token);
+                _outputDetectedCharactersQueue.Add(symbol.ToString(), token);
             }
         }
 
@@ -341,7 +346,17 @@ namespace ProcessDtmf
         private bool IsItPause()
         {
             // Вычисляем среднее значение сигнала
-            var avgLevel = _pauseImage.Select(x => (int) x).Average();
+            var avgLevel = _pauseImage.Select(x => (int)x).Average();
+            if (avgLevel > HandsetOffHookThreshold && _handsetIsOnHook)
+            {
+                _handsetIsOnHook = false;
+                _outputDetectedCharactersQueue.Add("\nOFF-HOOK\n");
+            }
+            else if (avgLevel < HandsetOnHookThreshold && !_handsetIsOnHook)
+            {
+                _handsetIsOnHook = true;
+                _outputDetectedCharactersQueue.Add("\nON-HOOK\n");
+            }
             // Вычисляем среднеквадратическое отклонение как квадратный
             // корень из дисперсии.
             // См. https://ru.wikipedia.org/wiki/%D0%94%D0%B8%D1%81%D0%BF%D0%B5%D1%80%D1%81%D0%B8%D1%8F_%D1%81%D0%BB%D1%83%D1%87%D0%B0%D0%B9%D0%BD%D0%BE%D0%B9_%D0%B2%D0%B5%D0%BB%D0%B8%D1%87%D0%B8%D0%BD%D1%8B
