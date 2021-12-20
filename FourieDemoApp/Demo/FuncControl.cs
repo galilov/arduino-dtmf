@@ -95,12 +95,12 @@ namespace Demo
         }
         private float _callFn(int i)
         {
-            return Height / 2f - Fn((float)i / Width) * (Height / 2f);
+            return Height / 2f - Fn((float)i / Width) * ((Height - 10) / 2f);
         }
 
         private float _callFn(float t)
         {
-            return Height / 2f - Fn(t) * (Height / 2f);
+            return Height / 2f - Fn(t) * ((Height - 10)/ 2f);
         }
     }
 }

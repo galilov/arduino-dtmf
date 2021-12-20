@@ -87,58 +87,77 @@ namespace Demo
             _resizeFuncControl();
         }
 
-        private static float _calc1(float t)
+        private static float _calc(float t)
         {
-            var amplitude = 0.5;
-            var phase = 0;
-            var yOffset = 0.5;
+            var amplitude = 0.4;
+            var phase = Math.PI/4;
+            var yOffset = 0.24;
             var f0 = 0.5;
             var f1 = 7;
             var f2 = 91;
-            var f3 = 90;
+            var f3 = 2;
             var w0 = 2 * Math.PI * f0;
             var w1 = 2 * Math.PI * f1;
             var w2 = 2 * Math.PI * f2;
             var w3 = 2 * Math.PI * f3;
-           // var vertUnit = 0.9f;
-            //var y0 = amplitude * vertUnit / 2 * Math.Sin(w0 * t + phase) + yOffset * vertUnit / 2;
             var y1 = amplitude *  Math.Cos(w1 * t + phase) + yOffset;
             var y2 = amplitude / 10 * Math.Sin(w2 * t + phase) + yOffset;
-            //var y3 = amplitude * vertUnit / 15 * Math.Cos(w3 * t + phase);
-            var y = y2 + y1;//+  y3; 
+            //var y3 = amplitude / 5 * Math.Cos(w3 * t + phase);
+            var y = y2 + y1;// +  y3; 
             return (float) y;
         }
 
-        private static float _calc(float t)
+        private static float _calc6(float t)
         {
-            var amplitude = 1;
-            var phase = 0;
-            var yOffset = 0;
-            var f0 = 5;
-            var f1 = 1;
+            var amplitude = 0.5;
+            var phase = 0;//Math.PI;
+            var yOffset = 0;//0.5;
+            var f0 = 7;
+            var f1 = 3;
             var f2 = 11;
             var f3 = 20;
             var w0 = 2 * Math.PI * f0;
             var w1 = 2 * Math.PI * f1;
             var w2 = 2 * Math.PI * f2;
             var w3 = 2 * Math.PI * f3;
-            //var y0 = amplitude * vertUnit / 2 * Math.Sin(w0 * t + phase) + yOffset * vertUnit / 2;
-            var y1 = amplitude * Math.Cos(w1 * t + phase) + yOffset;
+            var y0 = amplitude * Math.Sin(w0 * t + phase) + yOffset;
+            var y1 = amplitude * 0.5 *  Math.Cos(w1 * t + phase) + yOffset;
             //var y2 = amplitude * vertUnit *0.7 * Math.Cos(w2 * t + phase);
             //var y3 = amplitude * vertUnit * 0.6 * Math.Cos(w3 * t + phase);
-            var y =  y1 ; 
+            var y =  y0 + y1 ;
             return (float)y;
         }
 
-        private static float _calc2(float t)
+        private static float _calc4(float t)
         {
             var amplitude = 0.5;
-            var phase = 0;
-            var yOffset = 0.5;
-            var f1 = 7;
+            var phase = Math.PI;
+            var yOffset = 0.3;
+            var f0 = 7;
+            var f1 = 10;
+            var f2 = 11;
+            var f3 = 20;
+            var w0 = 2 * Math.PI * f0;
             var w1 = 2 * Math.PI * f1;
-            var vertUnit = 0.9f;
-            var y1 = amplitude * vertUnit * Math.Cos(w1 * t + phase) + yOffset * vertUnit;
+            var w2 = 2 * Math.PI * f2;
+            var w3 = 2 * Math.PI * f3;
+            //var y0 = amplitude * Math.Sin(w0 * t + phase) + yOffset;
+            var y1 = amplitude * Math.Cos(w1 * t + phase) + yOffset;
+            //var y2 = amplitude * vertUnit *0.7 * Math.Cos(w2 * t + phase);
+            //var y3 = amplitude * vertUnit * 0.6 * Math.Cos(w3 * t + phase);
+            var y =  y1;
+            return (float)y;
+        }
+
+        private static float _calc3(float t)
+        {
+            var amplitude = 1;
+            var phase = Math.PI/4;
+            var yOffset = 0;
+            var f1 = 1;
+            var w1 = 2 * Math.PI * f1;
+            //var vertUnit = 0.9f;
+            var y1 = amplitude * Math.Cos(w1 * t + phase) + yOffset;
             var y = y1;
             return (float)y;
         }
