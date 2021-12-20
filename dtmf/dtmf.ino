@@ -2,15 +2,15 @@
 // Код для ATmega328p/ATmega328pb
 // Arduino UNO/Nano/Iskra Nano Pro
 // (c) Alexander Galilov, 2021
-
+#include "Goertzel.h"
 // Скорость оцифровки сэмплов/сек
-const uint16_t ADC_SPEED = 9615;
+const float ADC_SPEED = 9615.385f;
 
 // Продолжительность одного DTMF символа, миллисекунды
-const uint16_t DTMF_MIN_LATENCY_MS = 40;
+const uint16_t DTMF_MIN_LATENCY_MS = 30;
 
 // Размер буфера для данных АЦП, сэмплы
-const uint16_t ADC_BUF_SIZE = static_cast<uint16_t>(static_cast<uint32_t>(ADC_SPEED) * DTMF_MIN_LATENCY_MS / 1000U);
+const uint16_t ADC_BUF_SIZE = static_cast<uint16_t>(static_cast<uint32_t>(ADC_SPEED * DTMF_MIN_LATENCY_MS / 1000));
 
 // Количество буферов
 const uint8_t ADC_N_BUFFERS = 2;
@@ -31,7 +31,7 @@ volatile uint8_t buf_ready_no = 0;
 // Устанавливается в обработчике прерываний АЦП, сбрасывается в коде, опрашивающем этот флаг.
 volatile bool is_buf_ready = false;
 
-// Здесь храниться состояние регистров управления АЦП
+// Здесь хранится состояние регистров управления АЦП
 byte saved_adcsra, saved_adcsrb, saved_admux;
 
 // Обработчик прерываний от АЦП
@@ -113,7 +113,7 @@ void configure_adc() {
 }
 
 void setup() {
-  Serial.begin(500000);
+  Serial.begin(115200);
   noInterrupts();
   save_adc_configuration();
   configure_adc();
@@ -125,7 +125,8 @@ void loop() {
   if (is_buf_ready) {
     is_buf_ready = false;
     for (int i = 0; i < ADC_BUF_SIZE; i++) {
-      Serial.println(buf[buf_ready_no][i]);
+      //Serial.println(buf[buf_ready_no][i]);
+      Serial.write(buf[buf_ready_no][i]);
     }
   }
 }
