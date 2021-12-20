@@ -2,7 +2,7 @@
 // Код для ATmega328p/ATmega328pb
 // Arduino UNO/Nano/Iskra Nano Pro
 // (c) Alexander Galilov, 2021
-#include "Goertzel.h"
+//#include "Goertzel.h"
 // Скорость оцифровки сэмплов/сек
 const float ADC_SPEED = 9615.385f;
 
