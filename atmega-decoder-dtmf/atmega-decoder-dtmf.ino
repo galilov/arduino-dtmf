@@ -2,10 +2,12 @@
 // Код для ATmega328p/ATmega328pb
 // Arduino UNO/Nano/Iskra Nano Pro
 // (c) Alexander Galilov, 2021
-// Скорость оцифровки (она же - частота дискретизации) сэмплов/сек (эффективная)
+//
+// Скорость оцифровки (она же - частота дискретизации) сэмплов/сек
 const float ADC_SPEED = 9615.385f;
 
-// Продолжительность одного DTMF символа, миллисекунды
+// Продолжительность одного DTMF символа, миллисекунды.
+// Такая же продолжительность и для паузы (что не совсем корректно и требует доработки).
 const uint16_t DTMF_MIN_DURATION_MS = 30;
 
 // Размер буфера для данных АЦП, сэмплы
@@ -30,8 +32,11 @@ const int16_t OFF_HOOK_SIGNAL_LEVEL = 10;
 // См. https://en.wikipedia.org/wiki/Fixed-point_arithmetic
 const int16_t q15_shift = 14;
 
+// Используется для разрешения загрузки оцифрованных данных.
 const uint8_t NOT_A_BUF_NO = 100;
 
+// Уровень гармоники, при котором мы считаем, что она
+// является частью сигнала DTMF, а не шумом или артефактом.
 const int16_t MIN_POWER = 90;
 
 // Буферы данных АЦП
@@ -84,6 +89,8 @@ ISR (ADC_vect) {
   uint8_t adc_val = ADCH;
   // Защитный механизм - может использоваться в случае риска не успеть обработать
   // буфер готовых данных вовремя (до его повторного использования для новых данных с АЦП).
+  // Кажется, здесь это происходит очень часто. Нужна оптимизация вычислений чтобы такого
+  // не случалось.
   if (dont_use_buf_no == buf_no) {
     return;
   }
@@ -193,6 +200,9 @@ void goertzel(uint8_t* samples, uint8_t coeff_index)
   }
 }
 
+// Вычисляем состояния сигнала:
+// 1. Опущена или поднята трубка на тел. аппарате.
+// 2. Является ли сигнал тишиной.
 void update_signal_state(uint8_t* samples) {
   uint32_t avg_level = 0;
   uint32_t signal_dispersion = 0;
@@ -277,10 +287,9 @@ void loop() {
     dont_use_buf_no = buf_ready_no;
     // Получаем указатель на буфер с готовыми к обработке данными.
     auto samples = buf[buf_ready_no];
-
     update_signal_state(samples);
     if (!is_silence) {
-      // Вычисляем powers
+      // Вычисляем powers для каждой из частот DTMF.
       for (int8_t i = 0; i < sizeof(freqs) / sizeof(freqs[0]); i++) {
         goertzel(samples, i);
       }
